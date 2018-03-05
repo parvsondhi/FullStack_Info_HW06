@@ -5,24 +5,59 @@
     <div class= "section">
       <a href="{{ url_for('display_customer') }}">Home</a>
     </div>
+
     <h2>Add Customer to Our Database</h2>
     <form action="" method="post" name="login">
-      {{ form.hidden_tag() }}
+      {{ customerForm.hidden_tag() }}
       <div class="divider"></div>
       <div class="section">
+        <!-- Customer Form Fields -->
         <p>
-          Company name:<br>
-          {{ form.company(size=120) }}<br>
+          First Name:<br>
+          {{ customerForm.first_name(size=120) }}<br>
+        </p>
+        <p>
+          Last Name:<br>
+          {{ customerForm.last_name(size=120) }}<br>
+        </p>
+        <p>
+          Company Name:<br>
+          {{ customerForm.company(size=120) }}<br>
         </p>
         <p>
           Customer email:<br>
-          {{ form.email(size=120) }}<br>
-          <!-- Additional form fields for the customer should go here -->
+          {{ customerForm.email(size=120) }}<br>
+        </p>
+        <p>
+          Phone:<br>
+          {{ customerForm.phone(size=120) }}<br>
         </p>
       </div>
       <div class="divider"></div>
       <div class="section">
-        <!-- Additional form fields for the Address should go here -->
+        <h2>Add an Address</h2>
+          {{ addressForm.hidden_tag() }}
+            <p>
+              Street Address:<br>
+              {{ addressForm.street_address(size=120) }}<br>
+            </p>
+            <p>
+              City:<br>
+              {{ addressForm.city(size=120) }}<br>
+            </p>
+            <p>
+              State:<br>
+              {{ addressForm.state(size=120) }}<br>
+            </p>
+            <p>
+              Country:<br>
+              {{ addressForm.country(size=120) }}<br>
+            </p>
+            <p>
+              Zipcode:<br>
+              {{ addressForm.zip_code(size=120) }}<br>
+            </p>
+          </div>
       </div>
       <p><input type="submit" value="Create Customer"></p>
     </form>
