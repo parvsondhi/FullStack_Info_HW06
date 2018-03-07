@@ -2,6 +2,9 @@ import sqlite3 as sql
 
 DB_PATH = 'app.db'
 
+def get_last_row_id(con):
+    return con.execute('SELECT last_insert_rowid()').fetchone()[0]
+
 # ================
 # CUSTOMERS
 # ================
@@ -27,11 +30,6 @@ def address_row_to_object(row):
         'country': row[6],
     }
 
-
-def insert_data():
-    # SQL statement to insert into database goes here
-    return
-
 def insert_customer(form):
     query = '''
         INSERT INTO `customer` (`first_name`, `last_name`, `company`, `email`, `phone`)  
@@ -56,6 +54,23 @@ def retrieve_customers():
 
     return []
 
+def retrieve_customer(id):
+    # SQL statement to query database goes here
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute('''
+            SELECT * 
+            FROM `customer`
+            WHERE `customer_id`=?;
+        ''',
+        (id));
+
+        record = cursor.fetchone()
+        if (record is not None):
+            return customer_row_to_object(record)
+        else:
+            return None
+
+    return None
 
 # ================
 # ORDERS
@@ -80,5 +95,22 @@ def retrieve_orders():
 
     return []
 
+def insert_order(customer_id, form):
+    query_1 = '''
+        INSERT INTO `order` (`name_of_part`, `manufacturer_of_part`)  
+        VALUES (?,?);
+    '''
+    query_2 = '''
+        INSERT INTO `customer_order` (`customer_id`, `order_id`)  
+        VALUES (?,?);
+    '''
 
+    with sql.connect(DB_PATH) as con: 
+        con.execute(query_1, [form.name_of_part.data, form.manufacturer_of_part.data])
+        con.commit()
+
+        order_id = get_last_row_id(con)
+
+        con.execute(query_2, [customer_id, order_id])
+        
 ##You might have additional functions to access the database

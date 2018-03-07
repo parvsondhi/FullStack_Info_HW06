@@ -28,3 +28,8 @@
 .table>tbody>tr>td {
     font-size: 0.9em;
 }
+
+/* 404 */
+.not-found-container img {
+    padding: 10% 35% 10% 0;
+}

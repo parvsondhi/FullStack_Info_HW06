@@ -21,4 +21,5 @@ class Address(Form):
 
 class OrderForm(Form):
     # Add order input form fields here
-    company = StringField('company', validators=[DataRequired()])
+    name_of_part = StringField('name_of_part', render_kw={'class': 'form-control', 'placeholder': 'Hydraulic Phallic Pressure Pump', 'required': True}, validators=[DataRequired('Please enter the name of the requested part.')])
+    manufacturer_of_part = StringField('manufacturer_of_part', render_kw={'class': 'form-control', 'placeholder': 'S3 Xtreme Ltd', 'required': True}, validators=[DataRequired('Please enter the manufacturer.')])
