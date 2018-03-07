@@ -2,6 +2,10 @@ import sqlite3 as sql
 
 DB_PATH = 'app.db'
 
+# ================
+# CUSTOMERS
+# ================
+
 def customer_row_to_object(row):
     return {
         'customer_id': row[0],
@@ -52,6 +56,18 @@ def retrieve_customers():
 
     return []
 
+
+# ================
+# ORDERS
+# ================
+
+def order_row_to_object(row):
+    return {
+        'order_id': row[0],
+        'name_of_part': row[1],
+        'manufacturer_of_part': row[2]
+    }
+
 def retrieve_orders():
     # SQL statement to query database goes here
     with sql.connect(DB_PATH) as con: 
@@ -60,7 +76,7 @@ def retrieve_orders():
             FROM `order`;
         ''');
         
-        return cursor.fetchall()
+        return list(map(lambda row: order_row_to_object(row), cursor.fetchall()))
 
     return []
 

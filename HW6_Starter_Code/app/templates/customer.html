@@ -1,67 +1,75 @@
 {% extends "base.html" %}
+
+{% block navlinks %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index_customers') }}">Home</a>
+</li>
+
+{% endblock %}
+
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class= "section">
-      <a href="{{ url_for('display_customer') }}">Home</a>
+  <div class="row justify-content-md-center">
+    <div class="col-md-2"></div>
+    <div class="col-md-auto">
+        <h4>Add Customer to Our Database</h4>
+        <form action="" method="post" name="login">
+            {{ form.hidden_tag() }}
+            <div class="divider"></div>
+            <div>
+              <div class="form-group">
+                <strong>First Name:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.first_name.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.first_name(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Last Name:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.last_name.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.last_name(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Company:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.company.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.company(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Email:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.email.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.email(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Phone:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.phone.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.phone(size=80) }}
+              </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Create Customer">
+            </div>
+          </form>
     </div>
-    <h2>Add Customer to Our Database</h2>
-    <form action="" method="post" name="login">
-      {{ form.hidden_tag() }}
-      <div class="divider"></div>
-      <div class="section">
-        <p>
-          <strong>First Name:</strong><br>
-          <div class="error" style="color: red;">
-            {% for message in form.first_name.errors %}
-              {{ message }}
-            {% endfor %}
-          </div>
-          {{ form.first_name(size=120) }}<br>
-        </p>
-        <p>
-          <strong>Last Name:</strong><br>
-          <div class="error" style="color: red;">
-            {% for message in form.last_name.errors %}
-              {{ message }}
-            {% endfor %}
-          </div>
-          {{ form.last_name(size=120) }}<br>
-        </p>
-        <p>
-          <strong>Company:</strong><br>
-          <div class="error" style="color: red;">
-            {% for message in form.company.errors %}
-              {{ message }}
-            {% endfor %}
-          </div>
-          {{ form.company(size=120) }}<br>
-        </p>
-        <p>
-          <strong>Email:</strong><br>
-          <div class="error" style="color: red;">
-            {% for message in form.email.errors %}
-              {{ message }}
-            {% endfor %}
-          </div>
-          {{ form.email(size=120) }}<br>
-        </p>
-        <p>
-          <strong>Phone:</strong><br>
-          <div class="error" style="color: red;">
-            {% for message in form.phone.errors %}
-              {{ message }}
-            {% endfor %}
-          </div>
-          {{ form.phone(size=120) }}<br>
-        </p>
-      </div>
-      <div class="divider"></div>
-      <div class="section">
-        <!-- Additional form fields for the Address should go here -->
-      </div>
-      <p><input type="submit" value="Create Customer"></p>
-    </form>
+    <div class="col-md-2"></div>
   </div>
 </div>
 {% endblock %}
