@@ -4,10 +4,10 @@ from flask_wtf.html5 import EmailField
 from wtforms.validators import DataRequired
 
 class CustomerForm(Form):
-    first_name = StringField('first_name', validators=[DataRequired()])
-    last_name = StringField('last_name', validators=[DataRequired()])
-    company = StringField('company', validators=[DataRequired()])
-    email = EmailField('email', validators=[DataRequired()])
+    first_name = StringField('first_name', validators=[DataRequired('Please enter your first name.')])
+    last_name = StringField('last_name', validators=[DataRequired('Please enter your last name.')])
+    company = StringField('company', validators=[DataRequired('Please enter your company name.')])
+    email = EmailField('email', validators=[DataRequired('Please enter your email.')])
     phone = StringField('phone', validators=[])
     # Add additional Address fields here
 

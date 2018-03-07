@@ -11,23 +11,48 @@
       <div class="divider"></div>
       <div class="section">
         <p>
-          Company name:<br>
-          {{ form.company(size=120) }}<br>
-        </p>
-        <p>
-          Customer FirstName:<br>
+          <strong>First Name:</strong><br>
+          <div class="error" style="color: red;">
+            {% for message in form.first_name.errors %}
+              {{ message }}
+            {% endfor %}
+          </div>
           {{ form.first_name(size=120) }}<br>
         </p>
         <p>
-          Customer LastName:<br>
+          <strong>Last Name:</strong><br>
+          <div class="error" style="color: red;">
+            {% for message in form.last_name.errors %}
+              {{ message }}
+            {% endfor %}
+          </div>
           {{ form.last_name(size=120) }}<br>
         </p>
         <p>
-          Customer Email:<br>
+          <strong>Company:</strong><br>
+          <div class="error" style="color: red;">
+            {% for message in form.company.errors %}
+              {{ message }}
+            {% endfor %}
+          </div>
+          {{ form.company(size=120) }}<br>
+        </p>
+        <p>
+          <strong>Email:</strong><br>
+          <div class="error" style="color: red;">
+            {% for message in form.email.errors %}
+              {{ message }}
+            {% endfor %}
+          </div>
           {{ form.email(size=120) }}<br>
         </p>
         <p>
-          Customer Phone:<br>
+          <strong>Phone:</strong><br>
+          <div class="error" style="color: red;">
+            {% for message in form.phone.errors %}
+              {{ message }}
+            {% endfor %}
+          </div>
           {{ form.phone(size=120) }}<br>
         </p>
       </div>
