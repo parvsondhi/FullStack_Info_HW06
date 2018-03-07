@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block navlinks %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index_customers') }}">Home</a>
+</li>
+
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+      <div class="not-found-container">
+          <img src="{{ url_for('static',filename='_assets/404.png') }}" class="img-fluid" alt="404">
+      </div>
+      
+      <h3>Ooops we cannot find what you are looking for :-( </h3>
+
+      <div>
+        <a class="btn btn-primary" href="/">
+          Go Back
+        </a>
+      </div>
+    
+  </div>
+{% endblock %}
