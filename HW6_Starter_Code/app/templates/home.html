@@ -25,6 +25,7 @@
               <th data-field="customer">Name</th>
               <th data-field="company">Company</th>
               <th data-field="email">Email</th>
+              <th data-field="phone">Phone</th>
               <th data-field="email">Action</th>
             </tr>
           </thead>
@@ -38,6 +39,7 @@
                 </td>
                 <td>{{ customer['company'] }}</td>
                 <td>{{ customer['email'] }}</td>
+                <td>{{ customer['phone'] }}</td>
                 <td>
                   <a href="{{ url_for('create_order', customer_id=customer['customer_id']) }}">
                     Add Order
@@ -54,6 +56,7 @@
             <thead>
               <tr>
                 <th data-field="id">Order</th>
+                <th data-field="customers">Customers</th>
                 <th data-field="name_of_part">Name of Part</th>
                 <th data-field="manufacturer_of_part">Manufacturer</th>
               </tr>
@@ -65,6 +68,16 @@
                     <a href="/orders/{{ order['order_id'] }}">
                         {{ 'acme-{:05}'.format(order['order_id']) }}
                     </a>
+                  </td>
+                  <td>
+                    {% for customer in order['customers'] %}
+                      <a href="/customers/{{ customer['customer_id'] }}">
+                        {{ customer['first_name'][:1] }}.  {{ customer['last_name'] }}
+                      </a>
+                      {% if loop.index0 < (order['customers']|length) -1 %}
+                        <span>, </span>
+                      {% endif %}
+                    {% endfor %}
                   </td>
                   <td>{{ order['name_of_part'] }}</td>
                   <td>{{ order['manufacturer_of_part'] }}</td>

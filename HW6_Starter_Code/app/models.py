@@ -46,10 +46,29 @@ def retrieve_customers():
         cursor = con.execute('''
             SELECT * 
             FROM `customer`;
-        ''');
+        ''')
 
         # print(list(map(lambda row: customer_row_to_object(row), cursor.fetchall())))
         
+        return list(map(lambda row: customer_row_to_object(row), cursor.fetchall()))
+
+    return []
+
+def retrieve_customers_by_ids(ids):
+    if (len(ids) == 0):
+        return []
+
+    query = '''
+            SELECT * 
+            FROM `customer`
+            WHERE `customer_id` in ({});
+            '''
+    query = query.format(', '.join(['?']*len(ids)))
+
+    # SQL statement to query database goes here
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute(query, ids)
+
         return list(map(lambda row: customer_row_to_object(row), cursor.fetchall()))
 
     return []
@@ -62,7 +81,7 @@ def retrieve_customer(id):
             FROM `customer`
             WHERE `customer_id`=?;
         ''',
-        (id));
+        (id))
 
         record = cursor.fetchone()
         if (record is not None):
@@ -77,11 +96,33 @@ def retrieve_customer(id):
 # ================
 
 def order_row_to_object(row):
+    # Note: I am aware that this doesn't scale at all, but wrt
+    # the scope of this exercise, I don't mind for now.
+
+    customers = get_customers_for_order_id(row[0])
+
     return {
         'order_id': row[0],
         'name_of_part': row[1],
-        'manufacturer_of_part': row[2]
+        'manufacturer_of_part': row[2],
+        'customers': customers
     }
+
+def get_customers_for_order_id(order_id):
+    customer_ids = []
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute(
+            '''
+                SELECT `customer_id`
+                FROM `customer_order`
+                WHERE `order_id` = ?;
+            '''
+        , [str(order_id)])
+        
+        customer_ids = [r[0] for r in cursor.fetchall()]
+
+    return retrieve_customers_by_ids(customer_ids)
+
 
 def retrieve_orders():
     # SQL statement to query database goes here
@@ -112,5 +153,5 @@ def insert_order(customer_id, form):
         order_id = get_last_row_id(con)
 
         con.execute(query_2, [customer_id, order_id])
-        
+
 ##You might have additional functions to access the database
