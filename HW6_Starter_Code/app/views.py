@@ -1,8 +1,8 @@
-from flask import render_template, redirect, request, abort
+from flask import render_template, redirect, request, abort, session
 from app import app, models, db
 from .forms import CustomerForm, OrderForm, AddressForm
-from .utils import dict_to_obj
-# Access the models file to use SQL functions
+from .utils import dict_to_obj, flash_message
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -18,18 +18,20 @@ def index_customers():
     # Retreive data from database to display
     customers = models.retrieve_customers()
     orders = models.retrieve_orders()
-    return render_template('home.html', customers=customers, orders=orders)
+    return render_template('home.html', customers=customers, orders=orders, flash_message=flash_message(session))
 
 @app.route('/create_customer', methods=['GET', 'POST'])
 def create_customer():
     ''' Create a new customer '''
     form = CustomerForm()
     if form.validate_on_submit():
-        # Get data from the form
-        # Send data from form to Database
-        models.insert_customer(form)
-        return redirect('/customers')
-    return render_template('customer.html', form=form)
+        customer_id = models.insert_customer(form)
+        if customer_id:
+            flash_message(session, text='<strong>Success!</strong> Customer was created.')
+            return redirect('/customers/'+str(customer_id))
+        else: 
+            return redirect('/customers')
+    return render_template('customer.html', form=form, flash_message=flash_message(session))
 
 @app.route('/customers/<id>', methods=['GET', 'POST'])
 def edit_customer(id):
@@ -42,15 +44,15 @@ def edit_customer(id):
     addressForm = AddressForm()
     if len(customer['addresses']):
         addressForm = AddressForm(obj=dict_to_obj(customer['addresses'][0]))
-        pass
 
     if form.validate_on_submit():
         # Get data from the form
         # Send data from form to Database
         models.update_customer(id, form)
+        flash_message(session, text='<strong>Success!</strong> Customer was updated.')
         return redirect('/customers/' + str(id))
 
-    return render_template('customer-detail.html', form=form, customer=customer, addressForm=addressForm)
+    return render_template('customer-detail.html', form=form, customer=customer, addressForm=addressForm, flash_message=flash_message(session))
 
 # ================
 # ORDERS
@@ -63,11 +65,15 @@ def create_order(customer_id):
     if (customer is None):
         abort(404)
     if form.validate_on_submit():
-        # Get data from the form
-        # Send data from form to Database
-        models.insert_order(customer['customer_id'], form)
-        return redirect('/customers')
-    return render_template('order.html', form=form, customer=customer)
+        
+        order_id = models.insert_order(customer['customer_id'], form)
+        if order_id:
+            flash_message(session, text='<strong>Success!</strong> Order was created.')
+            return redirect('/orders/' + str(order_id))
+        else: 
+            return redirect('/customers')
+
+    return render_template('order.html', form=form, customer=customer, flash_message=flash_message(session))
 
 
 @app.route('/orders/<id>/', methods=['GET', 'POST'])
@@ -83,12 +89,11 @@ def edit_order(id):
     form = OrderForm(obj=dict_to_obj(order))
 
     if form.validate_on_submit():
-        # Get data from the form
-        # Send data from form to Database
         models.update_order(id, form)
+        flash_message(session, text='<strong>Success!</strong> Order was updated.')
         return redirect('/orders/' + str(id))
 
-    return render_template('order-detail.html',  form=form, order=order, customers=customers)
+    return render_template('order-detail.html',  form=form, order=order, customers=customers, flash_message=flash_message(session))
 
 
 # ================
@@ -106,6 +111,7 @@ def create_address_for_customer(customer_id):
         # Get data from the form
         # Send data from form to Database
         models.insert_address_for_customer(customer['customer_id'], form)
+        flash_message(session, text='<strong>Success!</strong> Address was created.')
         return redirect('/customers/' + str(customer_id))
 
     return redirect('/customers/' + str(customer_id))
@@ -126,6 +132,7 @@ def update_address_for_customer(customer_id, address_id):
         # Get data from the form
         # Send data from form to Database
         models.update_address(address['id'], form)
+        flash_message(session, text='<strong>Success!</strong> Address was updated.')
         return redirect('/customers/' + str(customer_id))
 
     return redirect('/customers/' + str(customer_id))

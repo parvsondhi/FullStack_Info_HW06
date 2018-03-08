@@ -103,6 +103,7 @@ def insert_customer(form):
         con.execute(query, [form.first_name.data, form.last_name.data, form.company.data, form.email.data, form.phone.data])
         con.commit()
     
+        return get_last_row_id(con)
 
 def retrieve_customers():
     # SQL statement to query database goes here
@@ -245,6 +246,10 @@ def insert_order(customer_id, form):
         order_id = get_last_row_id(con)
 
         con.execute(query_2, [customer_id, order_id])
+
+        return order_id
+        
+    return None
 
 def update_order(order_id, form):
     query = '''

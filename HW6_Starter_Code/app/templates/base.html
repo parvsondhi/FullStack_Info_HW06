@@ -25,6 +25,20 @@
       </div>
     </nav>
 
+    {% if flash_message %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="flash alert alert-secondary">
+              {{ flash_message|safe }}
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+    {% endif %}
+
     <main class="container">
         {% block content %}{% endblock %}
     </main>

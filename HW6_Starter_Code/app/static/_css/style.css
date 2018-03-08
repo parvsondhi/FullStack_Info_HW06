@@ -19,8 +19,12 @@
     color: #f96332;
 }
 
-/* TABLE */
+/* FLASH MESSAGE */
+.alert.flash {
+    color: rgba(0,0,0, 0.8);
+}
 
+/* TABLE */
 .table>thead>tr>th {
     font-size: 1.0em;
 }
