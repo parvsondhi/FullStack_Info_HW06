@@ -28,7 +28,9 @@ create table addresses(
 create table orders(
     order_id integer primary key,
     name_of_part text not null,
-    manufacturer_of_part text not null
+    manufacturer_of_part text not null,
+    customer_id integer not null,
+    Foreign key(customer_id) references customers(customer_id)
 );
 
 create table orders_customers(

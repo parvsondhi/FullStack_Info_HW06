@@ -24,10 +24,10 @@ def retrieve_customers():
         print(result)
     return result
 
-def insert_order(name_of_part, manufacturer_of_part):
+def insert_order(name_of_part, manufacturer_of_part, customer_id):
     with sql.connect("app.db") as con:
         cur = con.cursor()
-        cur.execute("INSERT INTO orders (name_of_part, manufacturer_of_part, customer_id) VALUES (?,?)", (name_of_part, manufacturer_of_part))
+        cur.execute("INSERT INTO orders (name_of_part, manufacturer_of_part, customer_id) VALUES (?,?,?)", (name_of_part, manufacturer_of_part, customer_id))
         con.commit()
 
 def retrieve_orders():

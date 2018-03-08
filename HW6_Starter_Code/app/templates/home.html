@@ -34,12 +34,12 @@
       <div class="section">
         <h3>Orders from Customers:</h3>
         <table class="striped">
-        <th data-field="order_number">Order Number</th>
+        <th data-field="cust_number">Customer Number</th>
         <th data-field="name_of_part">Name of Part</th>
         <th data-field="manufacturer_of_part">Manufacturer of Part</th>
         {% for order in orders %}
         <tr>
-            <td>{{ order['order_id'] }}</td>
+            <td>{{ order['customer_id'] }}</td>
             <td>{{ order['name_of_part'] }}</td>
             <td>{{ order['manufacturer_of_part'] }}</td>
         </tr>

@@ -37,9 +37,10 @@ def display_customer():
 @app.route('/create_order/<value>', methods=['GET', 'POST'])
 def create_order(value):
     orderForm = OrderForm()
+    customer_id = value
     if orderForm.validate_on_submit():
         name_of_part = orderForm.name_of_part.data
         manufacturer_of_part = orderForm.manufacturer_of_part.data
-        insert_order(name_of_part, manufacturer_of_part)
+        insert_order(name_of_part, manufacturer_of_part, customer_id)
         return redirect('/customers')
     return render_template('order.html', form=orderForm)
