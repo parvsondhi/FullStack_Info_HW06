@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, abort
 from app import app, models, db
-from .forms import CustomerForm, OrderForm
+from .forms import CustomerForm, OrderForm, AddressForm
 from .utils import dict_to_obj
 # Access the models file to use SQL functions
 
@@ -34,12 +34,23 @@ def create_customer():
 @app.route('/customers/<id>', methods=['GET', 'POST'])
 def edit_customer(id):
     ''' Edit and update an existing customer '''
-    return 'TODO: Display One Customer'
+    customer = models.retrieve_one_customer_by_id(id)
+    if (customer is None):
+        abort(404)
 
-@app.route('/customers/<id>', methods=['DELETE'])
-def delete_customer(id):
-    return 'TODO: Delete customer'
+    form = CustomerForm(obj=dict_to_obj(customer))
+    addressForm = AddressForm()
+    if len(customer['addresses']):
+        addressForm = AddressForm(obj=dict_to_obj(customer['addresses'][0]))
+        pass
 
+    if form.validate_on_submit():
+        # Get data from the form
+        # Send data from form to Database
+        models.update_customer(id, form)
+        return redirect('/customers/' + str(id))
+
+    return render_template('customer-detail.html', form=form, customer=customer, addressForm=addressForm)
 
 # ================
 # ORDERS
@@ -78,3 +89,44 @@ def edit_order(id):
         return redirect('/orders/' + str(id))
 
     return render_template('order-detail.html',  form=form, order=order, customers=customers)
+
+
+# ================
+# Addresses
+# ================
+
+@app.route('/customers/<customer_id>/address', methods=['GET', 'POST'])
+def create_address_for_customer(customer_id):
+    customer = models.retrieve_one_customer_by_id(customer_id)
+    if (customer is None):
+        abort(404)
+
+    form = AddressForm()
+    if form.validate_on_submit():
+        # Get data from the form
+        # Send data from form to Database
+        models.insert_address_for_customer(customer['customer_id'], form)
+        return redirect('/customers/' + str(customer_id))
+
+    return redirect('/customers/' + str(customer_id))
+    
+
+@app.route('/customers/<customer_id>/address/<address_id>', methods=['GET', 'POST'])
+def update_address_for_customer(customer_id, address_id):
+    customer = models.retrieve_one_customer_by_id(customer_id)
+    if (customer is None):
+        abort(404)
+
+    address = models.retrieve_one_addresss_by_id(address_id)
+    if (address is None):
+        abort(404)
+
+    form = AddressForm()
+    if form.validate_on_submit():
+        # Get data from the form
+        # Send data from form to Database
+        models.update_address(address['id'], form)
+        return redirect('/customers/' + str(customer_id))
+
+    return redirect('/customers/' + str(customer_id))
+    

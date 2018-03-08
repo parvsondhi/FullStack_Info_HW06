@@ -11,13 +11,13 @@ class CustomerForm(Form):
     email = EmailField('email', render_kw={'class': 'form-control', 'placeholder': 'j.doe@gmail.com', 'required': True}, validators=[DataRequired('Please enter your email.')])
     phone = StringField('phone', render_kw={'class': 'form-control', 'placeholder': '+1 123 346 7890'}, validators=[])
 
-class Address(Form):
+class AddressForm(Form):
     # Add additional Address fields here
-    email = StringField('street_address', validators=[DataRequired('Please a street address.')])
-    city = StringField('city', validators=[DataRequired('Please the city.')])
-    zip_code = StringField('zip_code', validators=[DataRequired('Please the zip code.')])
-    state = StringField('state', validators=[])
-    country = StringField('country', validators=[])
+    street_address = StringField('street_address', render_kw={'class': 'form-control', 'placeholder': '1378 Sesame Street', 'required': True}, validators=[DataRequired('Please a street address.')])
+    city = StringField('city', render_kw={'class': 'form-control', 'placeholder': 'Berkeley', 'required': True}, validators=[DataRequired('Please the city.')])
+    zip_code = StringField('zip_code', render_kw={'class': 'form-control', 'placeholder': '94705', 'required': True}, validators=[DataRequired('Please the zip code.')])
+    state = StringField('state', render_kw={'class': 'form-control', 'placeholder': 'CA'}, validators=[])
+    country = StringField('country', render_kw={'class': 'form-control', 'placeholder': 'United States of America'}, validators=[])
 
 class OrderForm(Form):
     # Add order input form fields here

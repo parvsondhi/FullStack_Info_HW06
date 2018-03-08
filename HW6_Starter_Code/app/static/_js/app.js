@@ -4,9 +4,13 @@ $(document).ready(function(){
 });
 
 function setup() {
-
+	$('.not-implemented').on('click', handle_missing_functionality); 
 }
 
 function setup_did_finish() {
 	$('.cloak').removeClass('cloak');
+}
+
+function handle_missing_functionality() {
+	alert('NOT IMPLEMENTED\n\n' + $(this).attr('msg'))
 }

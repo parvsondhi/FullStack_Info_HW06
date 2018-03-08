@@ -5,19 +5,10 @@ DB_PATH = 'app.db'
 def get_last_row_id(con):
     return con.execute('SELECT last_insert_rowid()').fetchone()[0]
 
-# ================
-# CUSTOMERS
-# ================
 
-def customer_row_to_object(row):
-    return {
-        'customer_id': row[0],
-        'first_name': row[1],
-        'last_name': row[2],
-        'company': row[3],
-        'email': row[4],
-        'phone': row[5],
-    }
+# ================
+# Addresses
+# ================
 
 def address_row_to_object(row):
     return {
@@ -28,6 +19,79 @@ def address_row_to_object(row):
         'zip_code': row[4],
         'state': row[5],
         'country': row[6],
+    }
+
+
+def get_addresses_for_customer_id(customer_id):
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute(
+            '''
+                SELECT *
+                FROM `address`
+                WHERE `customer_id` = ?
+                ORDER BY `id` DESC;
+            '''
+        , [str(customer_id)])
+        
+        return list(map(lambda row: address_row_to_object(row), cursor.fetchall()))
+
+    return []
+
+def retrieve_one_addresss_by_id(id):
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute('''
+            SELECT * 
+            FROM `address`
+            WHERE `id`=?;
+        ''',
+        (id))
+
+        record = cursor.fetchone()
+        if (record is not None):
+            return address_row_to_object(record)
+        else:
+            return None
+
+    return None
+    
+
+def insert_address_for_customer(customer_id, form):
+    query = '''
+        INSERT INTO `address` (`customer_id`, `street_address`, `city`, `zip_code`, `state`, `country`)  
+        VALUES (?,?,?,?,?,?);
+    '''
+    with sql.connect(DB_PATH) as con: 
+        con.execute(query, [customer_id, form.street_address.data, form.city.data, form.zip_code.data, form.state.data, form.country.data])
+        con.commit()
+    
+def update_address(address_id, form):
+    query = '''
+        UPDATE `address` 
+        SET `street_address`=?, `city`=?, `zip_code`=?, `state`=?, `country`=?
+        WHERE `id`=?;
+    '''
+
+    with sql.connect(DB_PATH) as con: 
+        con.execute(query, [form.street_address.data, form.city.data, form.zip_code.data, form.state.data, form.country.data, address_id])
+        con.commit()
+
+
+# ================
+# CUSTOMERS
+# ================
+
+def customer_row_to_object(row):
+
+    addresses = get_addresses_for_customer_id(row[0])
+
+    return {
+        'customer_id': row[0],
+        'first_name': row[1],
+        'last_name': row[2],
+        'company': row[3],
+        'email': row[4],
+        'phone': row[5],
+        'addresses': addresses
     }
 
 def insert_customer(form):
@@ -47,8 +111,6 @@ def retrieve_customers():
             SELECT * 
             FROM `customer`;
         ''')
-
-        # print(list(map(lambda row: customer_row_to_object(row), cursor.fetchall())))
         
         return list(map(lambda row: customer_row_to_object(row), cursor.fetchall()))
 
@@ -65,7 +127,6 @@ def retrieve_customers_by_ids(ids):
             '''
     query = query.format(', '.join(['?']*len(ids)))
 
-    # SQL statement to query database goes here
     with sql.connect(DB_PATH) as con: 
         cursor = con.execute(query, ids)
 
@@ -74,7 +135,6 @@ def retrieve_customers_by_ids(ids):
     return []
 
 def retrieve_one_customer_by_id(id):
-    # SQL statement to query database goes here
     with sql.connect(DB_PATH) as con: 
         cursor = con.execute('''
             SELECT * 
@@ -90,6 +150,18 @@ def retrieve_one_customer_by_id(id):
             return None
 
     return None
+
+def update_customer(customer_id, form):
+    query = '''
+        UPDATE `customer` 
+        SET `first_name`=?, `last_name`=?, `company`=?, `email`=?, `phone`=?
+        WHERE `customer_id`=?;
+    '''
+
+    with sql.connect(DB_PATH) as con: 
+        con.execute(query, [form.first_name.data, form.last_name.data, form.company.data, form.email.data, form.phone.data, customer_id])
+        con.commit()
+
 
 # ================
 # ORDERS
@@ -184,4 +256,3 @@ def update_order(order_id, form):
     with sql.connect(DB_PATH) as con: 
         con.execute(query, [form.name_of_part.data, form.manufacturer_of_part.data, order_id])
         con.commit()
-
