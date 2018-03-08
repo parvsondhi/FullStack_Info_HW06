@@ -1,6 +1,7 @@
 from flask import render_template, redirect, request, abort
 from app import app, models, db
 from .forms import CustomerForm, OrderForm
+from .utils import dict_to_obj
 # Access the models file to use SQL functions
 
 @app.errorhandler(404)
@@ -39,11 +40,15 @@ def edit_customer(id):
 def delete_customer(id):
     return 'TODO: Delete customer'
 
-@app.route('/customer/<customer_id>/create_order', methods=['GET', 'POST'])
+
+# ================
+# ORDERS
+# ================
+@app.route('/customers/<customer_id>/create_order', methods=['GET', 'POST'])
 def create_order(customer_id):
     ''' Create a new order '''
     form = OrderForm()
-    customer = models.retrieve_customer(customer_id)
+    customer = models.retrieve_one_customer_by_id(customer_id)
     if (customer is None):
         abort(404)
     if form.validate_on_submit():
@@ -52,3 +57,24 @@ def create_order(customer_id):
         models.insert_order(customer['customer_id'], form)
         return redirect('/customers')
     return render_template('order.html', form=form, customer=customer)
+
+
+@app.route('/orders/<id>/', methods=['GET', 'POST'])
+def edit_order(id):
+    customers = models.retrieve_customers()
+    order = models.retrieve_one_order_by_id(id)
+    if (order is None):
+        abort(404)
+
+    associated_customers_with_order_ids = [c['customer_id'] for c in order['customers']]
+    customers = [c for c in customers if c['customer_id'] not in associated_customers_with_order_ids]
+
+    form = OrderForm(obj=dict_to_obj(order))
+
+    if form.validate_on_submit():
+        # Get data from the form
+        # Send data from form to Database
+        models.update_order(id, form)
+        return redirect('/orders/' + str(id))
+
+    return render_template('order-detail.html',  form=form, order=order, customers=customers)

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block navlinks %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index_customers') }}">Home</a>
+</li>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-1"></div>
+    <div class="col-md-auto">
+        <h4>Edit Order
+            <a href="/orders/{{ order['order_id'] }}">
+                {{ 'acme-{:05}'.format(order['order_id']) }}
+            </a>
+        </h4>
+        <div class="section">
+            <form action="" method="post" name="login">
+                {{ form.hidden_tag() }}
+                <div class="divider"></div>
+                <div>
+                    <div class="form-group">
+                    <strong>Name of Part:</strong><br>
+                    <div class="error" style="color: red;">
+                        {% for message in form.name_of_part.errors %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {{ form.name_of_part(size=80) }}
+                    </div>
+                    <div class="form-group">
+                    <strong>Manufacturer</strong><br>
+                    <div class="error" style="color: red;">
+                        {% for message in form.manufacturer_of_part.errors %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {{ form.manufacturer_of_part(size=80) }}
+                    </div>
+                </div>
+                <div>
+                    <input class="btn btn-primary" type="submit" value="Update Order">
+                </div>
+            </form>
+        </div>
+        <div class="section">
+            <h5>Customers</h5>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th data-field="customer">Name</th>
+                    <th data-field="company">Company</th>
+                    <th data-field="email">Email</th>
+                    <th data-field="phone">Phone</th>
+                    <th data-field="email">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for customer in order['customers'] %}
+                    <tr>
+                    <td>
+                        <a href="/customers/{{ customer['customer_id'] }}">
+                            {{ customer['first_name'][:1] }}.  {{ customer['last_name'] }}
+                        </a>
+                    </td>
+                    <td>{{ customer['company'] }}</td>
+                    <td>{{ customer['email'] }}</td>
+                    <td>{{ customer['phone'] }}</td>
+                    <td>
+                        <a href="#">
+                            Remove
+                        </a>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h6>Add Customers</h6>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th data-field="customer">Name</th>
+                    <th data-field="company">Company</th>
+                    <th data-field="email">Email</th>
+                    <th data-field="phone">Phone</th>
+                    <th data-field="email">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>
+                        <a href="/customers/{{ customer['customer_id'] }}">
+                            {{ customer['first_name'][:1] }}.  {{ customer['last_name'] }}
+                        </a>
+                        </td>
+                        <td>{{ customer['company'] }}</td>
+                        <td>{{ customer['email'] }}</td>
+                        <td>{{ customer['phone'] }}</td>
+                        <td>
+                        <a href="">
+                            Add 
+                        </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+{% endblock %}

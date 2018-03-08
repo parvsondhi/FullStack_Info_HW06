@@ -73,7 +73,7 @@ def retrieve_customers_by_ids(ids):
 
     return []
 
-def retrieve_customer(id):
+def retrieve_one_customer_by_id(id):
     # SQL statement to query database goes here
     with sql.connect(DB_PATH) as con: 
         cursor = con.execute('''
@@ -136,6 +136,26 @@ def retrieve_orders():
 
     return []
 
+
+def retrieve_one_order_by_id(id):
+    # SQL statement to query database goes here
+    with sql.connect(DB_PATH) as con: 
+        cursor = con.execute('''
+            SELECT * 
+            FROM `order`
+            WHERE `order_id`=?;
+        ''',
+        (id))
+
+        record = cursor.fetchone()
+        if (record is not None):
+            return order_row_to_object(record)
+        else:
+            return None
+
+    return None
+
+
 def insert_order(customer_id, form):
     query_1 = '''
         INSERT INTO `order` (`name_of_part`, `manufacturer_of_part`)  
@@ -154,4 +174,14 @@ def insert_order(customer_id, form):
 
         con.execute(query_2, [customer_id, order_id])
 
-##You might have additional functions to access the database
+def update_order(order_id, form):
+    query = '''
+        UPDATE `order` 
+        SET `name_of_part`=? , `manufacturer_of_part`=?
+        WHERE `order_id`=?;
+    '''
+
+    with sql.connect(DB_PATH) as con: 
+        con.execute(query, [form.name_of_part.data, form.manufacturer_of_part.data, order_id])
+        con.commit()
+
