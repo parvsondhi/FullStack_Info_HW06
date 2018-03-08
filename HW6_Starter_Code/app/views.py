@@ -15,7 +15,6 @@ def create_customer():
     form = CustomerForm()
     if form.validate_on_submit():
         # Get data from the form
-        # Send data from form to Database
         firstname = form.firstname.data
         lastname = form.lastname.data
         company = form.company.data
@@ -26,6 +25,8 @@ def create_customer():
         state = form.state.data
         country = form.country.data
         zipcode = form.zipcode.data
+
+        # Send data from form to Database
         customer_id = insert_customer(firstname,lastname,company,email,phone)
         insert_address(address,city,state,country,zipcode,customer_id)
         return redirect('/customers')
@@ -45,9 +46,10 @@ def create_order(value):
     form = OrderForm()
     if form.validate_on_submit():
         # Get data from the form
-        # Send data from form to Database
         name_of_part = form.name_of_part.data
         manufacturer = form.manufacturer.data
+
+        # Send data from form to Database
         order_id = insert_order(name_of_part, manufacturer, value)
         insert_customers_order(value, order_id)
         return redirect('/customers')
