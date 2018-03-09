@@ -19,6 +19,7 @@ def create_customer():
 
 @app.route('/customers')
 def display_customer():
+    customers = models.retrieve_customers()
     # Retreive data from database to display
     return render_template('home.html',
                             customers=customers)
@@ -27,5 +28,5 @@ def display_customer():
 def create_order(value):
         # Get data from the form
         # Send data from form to Database
-        return redirect('/customers')
+        # return redirect('/customers')
     return render_template('order.html', form=orderForm)

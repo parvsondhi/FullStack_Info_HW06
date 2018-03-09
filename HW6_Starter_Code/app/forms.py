@@ -8,5 +8,7 @@ class CustomerForm(Form):
     email = EmailField('email', validators=[DataRequired()])
     # Add additional Address fields here
 
+
 class OrderForm(Form):
     # Add order input form fields here
+    pass
