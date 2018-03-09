@@ -6,9 +6,45 @@
     <title>Welcome to ACME Aircraft Parts</title>
     {% endif %}
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='_css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='_css/now-ui-dashboard.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='_css/style.css') }}">
   </head>
-  <body>
-    {% block content %}{% endblock %}
+  <body class="cloak">
+
+    <nav class="navbar navbar-light bg-light">
+      <div class="container">
+          <a class="word-mark" href="/">
+            ACME Aircraft Parts
+          </a>
+
+          <ul class="nav justify-content-end">
+              {% block navlinks %}
+              {% endblock %}
+          </ul>
+      </div>
+    </nav>
+
+    {% if flash_message %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="flash alert alert-secondary">
+              {{ flash_message|safe }}
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+    {% endif %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+      
+
+    <script type="text/javascript" src="{{ url_for('static',filename='_js/jquery-3.3.1.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static',filename='_js/app.js') }}"></script>
   </body>
 </html>

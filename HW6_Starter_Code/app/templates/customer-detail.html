@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block navlinks %}
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index_customers') }}">Home</a>
+</li>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-2"></div>
+    <div class="col-md-auto">
+        <h4>Update Customer Information</h4>
+        <form action="" method="post" name="login">
+            {{ form.hidden_tag() }}
+            <div class="divider"></div>
+            <div>
+              <div class="form-group">
+                <strong>First Name:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.first_name.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.first_name(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Last Name:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.last_name.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.last_name(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Company:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.company.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.company(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Email:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.email.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.email(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Phone:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in form.phone.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ form.phone(size=80) }}
+              </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Update Customer">
+            </div>
+          </form>
+    </div>
+    <div class="col-md-2"></div>
+
+    <div class="col-md-2"></div>
+    <div class="col-md-auto">
+        <div class="row">
+            <div class="col-md-9">
+                <h6>Update Address Information</h6>
+            </div>
+            
+            <div class="col-md-3">
+                {% if customer['addresses']|length > 0 %}
+                <a  href="#" 
+                    style="vertical-align: bottom;" 
+                    class="not-implemented" 
+                    msg="Adding multiple addresses is not implemented yet, as it was not part of the required functionality in the demo video.">
+                        Add Address
+                </a>
+                {% endif %}
+            </div>
+        </div>    
+        
+        {% if customer['addresses']|length == 0 %}
+        <form action="/customers/{{ customer['customer_id'] }}/address" method="post" name="login">
+        {% endif %}
+        {% if customer['addresses']|length > 0 %}
+        <form action="/customers/{{ customer['customer_id'] }}/address/{{ customer['addresses'][0]['id'] }}" method="post" name="login">
+        {% endif %}
+        
+            {{ form.hidden_tag() }}
+            <div class="divider"></div>
+            <div>
+              <div class="form-group">
+                <strong>Street :</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in addressForm.street_address.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ addressForm.street_address(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>Zip Code:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in addressForm.zip_code.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ addressForm.zip_code(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>City:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in addressForm.city.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ addressForm.city(size=80) }}
+              </div>
+              <div class="form-group">
+                <strong>State:</strong><br>
+                <div class="error" style="color: red;">
+                  {% for message in addressForm.state.errors %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+                {{ addressForm.state(size=80) }}
+              </div>
+              <div class="form-group">
+                    <strong>Country:</strong><br>
+                    <div class="error" style="color: red;">
+                      {% for message in addressForm.country.errors %}
+                        {{ message }}
+                      {% endfor %}
+                    </div>
+                    {{ addressForm.country(size=80) }}
+                  </div>
+            </div>
+            <div>
+                {% if customer['addresses']|length == 0 %}
+                <input class="btn btn-primary" type="submit" value="Add Address">
+                {% endif %}
+                {% if customer['addresses']|length > 0 %}
+                <input class="btn btn-primary" type="submit" value="Update Address">
+                {% endif %}
+               
+            </div>
+          </form>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+{% endblock %}

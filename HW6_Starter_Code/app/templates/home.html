@@ -1,35 +1,92 @@
 {% extends "base.html" %}
+
+{% block navlinks %}
+{% endblock %}
+
 {% block content %}
   <div class="container">
+      <div class="jumbotron">
+          <h3>Welcome to ACME Aircraft Parts!</h3>
+          <div class="subtitle">
+              Easily search, find &amp; buy millions of aircraft OEM &amp; aftermarket equipment and parts with the online marketplace from ILS. Contact us today to learn more! 
+          </div>
+        </div>
     <div class="row">
-      <h1>Welcome to ACME Aircraft Parts</h1>
-      <div class= "section">
-        <a href="{{ url_for('create_customer') }}">Add a Customer</a>
-      </div>
-      <div class="divider"></div>
-      <div class="section">
-        <h3>These are all of our awesome customers:</h3>
-        <table class="striped">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-10">
+              <h4>These are all of our awesome customers:</h4>
+          </div>
+          <div class="col-md-2">
+              <a class="btn btn-primary" href="{{ url_for('create_customer') }}" style="vertical-align: bottom;">New Customer</a>
+          </div>
+        </div>         
+        <table class="table table-striped">
           <thead>
             <tr>
+              <th data-field="customer">Name</th>
               <th data-field="company">Company</th>
               <th data-field="email">Email</th>
+              <th data-field="phone">Phone</th>
+              <th data-field="email">Action</th>
             </tr>
           </thead>
-          {% for customer in customers %}
-            <tr>
-              <td>{{ customer['company'] }}</td>
-              <td>{{ customer['email'] }}</td>
-              <!-- Add more fields to showcase on this page
-              Below is a method of adding the 'add an order' button which will route you to create_order in views.py
-              <td><a href="{{ url_for('create_order', value=customer['customer_id']) }}">Add an Order</a></td> -->
-            </tr>
-          {% endfor %}
+          <tbody>
+              {% for customer in customers %}
+              <tr>
+                <td>
+                  <a href="/customers/{{ customer['customer_id'] }}">
+                      {{ customer['first_name'][:1] }}.  {{ customer['last_name'] }}
+                  </a>
+                </td>
+                <td>{{ customer['company'] }}</td>
+                <td>{{ customer['email'] }}</td>
+                <td>{{ customer['phone'] }}</td>
+                <td>
+                  <a href="{{ url_for('create_order', customer_id=customer['customer_id']) }}">
+                    Add Order
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
-      <div class="section">
-        <h3>Orders from Customers:</h3>
-        <!-- Display all the current existing order information here -->
+      <div class="col-md-12">
+        <h4>Orders from Customers:</h4>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th data-field="id">Order</th>
+                <th data-field="customers">Customers</th>
+                <th data-field="name_of_part">Name of Part</th>
+                <th data-field="manufacturer_of_part">Manufacturer</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td>
+                    <a href="/orders/{{ order['order_id'] }}">
+                        {{ 'acme-{:05}'.format(order['order_id']) }}
+                    </a>
+                  </td>
+                  <td>
+                    {% for customer in order['customers'] %}
+                      <a href="/customers/{{ customer['customer_id'] }}">
+                        {{ customer['first_name'][:1] }}.  {{ customer['last_name'] }}
+                      </a>
+                      {% if loop.index0 < (order['customers']|length) -1 %}
+                        <span>, </span>
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                  <td>{{ order['name_of_part'] }}</td>
+                  <td>{{ order['manufacturer_of_part'] }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
       </div>
     </div>
   </div>
