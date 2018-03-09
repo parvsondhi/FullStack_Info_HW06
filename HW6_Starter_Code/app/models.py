@@ -217,8 +217,7 @@ def retrieve_one_order_by_id(id):
             SELECT * 
             FROM `order`
             WHERE `order_id`=?;
-        ''',
-        (id))
+        ''', [id])
 
         record = cursor.fetchone()
         if (record is not None):
