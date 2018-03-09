@@ -12,11 +12,11 @@ CREATE TABLE customer(
 
 drop table if exists address;
 CREATE TABLE address(
-	street_address text,
-	city text,
-	state text,
-	country text,
-	zip_code integer,
+	street_address text not null,
+	city text not null,
+	state text not null,
+	country text not null,
+	zip_code integer not null,
 	id integer not null,
 	FOREIGN KEY (id) REFERENCES customer(customer_id)
 );

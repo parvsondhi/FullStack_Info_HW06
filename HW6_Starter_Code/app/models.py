@@ -8,6 +8,14 @@ def insert_data(firstName,lastName,company,email,phone):
     	con.commit()
     return cur.lastrowid
 
+def insert_address(street_address,city,state,country,zip_code,customer_id):
+    # SQL statement to insert into database goes here
+    with sql.connect('database.db') as con:
+    	cur = con.cursor()
+    	cur.execute("INSERT INTO address (street_address,city,state,country,zip_code,id) VALUES (?, ?, ?, ?, ?, ?)", [street_address,city,state,country,zip_code,customer_id])
+    	con.commit()
+    return cur.lastrowid
+
 
 def retrieve_customers():
     # SQL statement to query database goes here
@@ -27,15 +35,6 @@ def retrieve_orders():
 		cur = con.cursor() 
 		result = cur.execute("SELECT * from order_to").fetchall()
 	return result
-
-# def retrive_customer_id():
-# 	with sql.connect('database.db') as con:
-#     	# create a cursor
-# 		con.row_factory = sql.Row
-# 		cur = con.cursor() 
-# 		result = cur.execute("SELECT customer_id from order_to").fetchone()
-# 	return result
-
 
 def insert_order(partName, manufacturerName,customer_id):
     # SQL statement to insert into database goes here

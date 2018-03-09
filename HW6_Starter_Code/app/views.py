@@ -21,6 +21,13 @@ def create_customer():
         email = form.email.data
         phone = form.phone.data
         insert_data(firstName,lastName,company,email,phone)
+        consumer_id = insert_data(firstName,lastName,company,email,phone)
+        street_address = form.street_address.data
+        city = form.city.data
+        state = form.state.data
+        country = form.country.data
+        zip_code = form.zip_code.data
+        insert_address(street_address,city,state,country,zip_code,consumer_id)
 
         return redirect('/customers')
     return render_template('customer.html', form=form)

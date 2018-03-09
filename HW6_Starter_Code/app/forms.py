@@ -10,6 +10,11 @@ class CustomerForm(Form):
 	email = EmailField('email', validators=[DataRequired()])
 	phone = IntegerField('phone', validators=[DataRequired()])
     # Add additional Address fields here
+	street_address = StringField('street_address', validators=[DataRequired()])
+	city = StringField('firstName', validators=[DataRequired()])
+	state = StringField('firstName', validators=[DataRequired()])
+	country = StringField('firstName', validators=[DataRequired()])
+	zip_code = IntegerField('zip_code', validators=[DataRequired()])
 
 class OrderForm(Form):
 #     # Add order input form fields here

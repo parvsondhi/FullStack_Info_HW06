@@ -32,10 +32,30 @@
           <!-- Additional form fields for the customer should go here -->
         </p>
       </div>
-
+      <h2>Add an Address for the Comsumer</h2>
       <div class="divider"></div>
       <div class="section">
-        <!-- Additional form fields for the Address should go here --> 
+        <!-- Additional form fields for the Address should go here -->
+        <p>
+        Street Address:<br>
+        {{ form.street_address(size=120) }}<br>
+        </p>
+        <p>
+        City:<br>
+        {{ form.city(size=120) }}<br>
+        </p>  
+        <p>
+        State:<br>
+        {{ form.state(size=120) }}<br>
+        </p> 
+        <p>
+        Country:<br>
+        {{ form.country(size=120) }}<br>
+        </p>   
+        <p>
+        Zio Code:<br>
+        {{ form.zip_code(size=120) }}<br>
+        </p>    
       </div>
       <p><input type="submit" value="Create Customer"></p>
     </form>
