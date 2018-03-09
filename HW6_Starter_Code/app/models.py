@@ -1,5 +1,6 @@
 import sqlite3 as sql
 
+# Add a customer to the database
 def insert_customer(firstName, lastName, company, email, telephone):
     # SQL statement to insert into database goes here
     with sql.connect("app.db") as con:
@@ -11,6 +12,7 @@ def insert_customer(firstName, lastName, company, email, telephone):
         # Added this
         return lastID
 
+# This returns all customers 
 def retrieve_customers():
     # SQL statement to query database goes here
     with sql.connect("app.db") as con:
@@ -20,6 +22,7 @@ def retrieve_customers():
         # print(result)
         return result
 
+# This function is not needed anymore
 def retrieve_customer_id(firstName, lastName):
 	with sql.connect("app.db") as con:
 		con.row_factory = sql.Row
@@ -29,6 +32,7 @@ def retrieve_customer_id(firstName, lastName):
 		# print(result)
 		return result
 
+# This is used to pass the id to the address as the email is a unique attribute
 def retrieve_customer_id_byemail(value):
 	with sql.connect("app.db") as con:
 		con.row_factory = sql.Row
@@ -48,7 +52,7 @@ def insert_order(nameOfPart, manufacturerOfPart):
 		con.commit()
 		return lastID
 
-
+# Insert order and customer id into the matching database
 def insert_order_match(orderID, customerID):
     # SQL statement to insert into database goes here
     with sql.connect("app.db") as con:
@@ -56,7 +60,7 @@ def insert_order_match(orderID, customerID):
         cur.execute("INSERT INTO order_match (order_id, customer_id) VALUES (?,?)", (orderID, customerID))
         con.commit()
 
-
+#  Return all orders
 def retrieve_orders():
     # SQL statement to query database goes here
     with sql.connect("app.db") as con:
@@ -66,6 +70,7 @@ def retrieve_orders():
         # print(result)
         return result
 
+# GEt customer ID of an order based on order id
 def retrieve_order_match(oID):
 	with sql.connect("app.db") as con:
 		con.row_factory = sql.Row
@@ -75,13 +80,10 @@ def retrieve_order_match(oID):
 		# print(result)
 		return result
 
-
+# Insert address into the database
 def insert_address(addressID, streetAddress, state, country, zipCode):
     # SQL statement to insert into database goes here
     with sql.connect("app.db") as con:
         cur = con.cursor()
         cur.execute("INSERT INTO addresses (id, street_address, state_, country, zip_code) VALUES (?,?,?,?,?)", (addressID, streetAddress, state, country, zipCode))
         con.commit()
-
-
-##You might have additional functions to access the database

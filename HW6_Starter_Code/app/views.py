@@ -44,7 +44,7 @@ def display_customer():
 
     orders = retrieve_orders()
 
-    
+    # Construct the object that is used to display orders on homepage
 
     stuff = []
 
@@ -63,17 +63,16 @@ def display_customer():
     return render_template('home.html', customers=customers, orders=stuff)
 
 
-# THIS WAS HERE BUT COMMENTED OUT MOMNTARILLY
-
 @app.route('/create_order/<value>', methods=['GET', 'POST'])
 def create_order(value):
     form = orderForm()
     if form.validate_on_submit():
+        
         # Get data from the form
-        # Send data from form to Database
         nameOfPart = form.nameOfPart.data
         manufacturerOfPart = form.manufacturerOfPart.data
         
+        # Send data from form to Database
         orderID = insert_order(nameOfPart, manufacturerOfPart)
         orderID = orderID[0]
         
