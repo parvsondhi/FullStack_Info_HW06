@@ -14,6 +14,7 @@ def create_customer():
     if form.validate_on_submit():
         # Get data from the form
         # Send data from form to Database
+        print(form)
         return redirect('/customers')
     return render_template('customer.html', form=form)
 
