@@ -14,22 +14,47 @@
             <tr>
               <th data-field="company">Company</th>
               <th data-field="email">Email</th>
+              <th data-field="fname">First Name</th>
+              <th data-field="lname">Last Name</th>
+              <th data-field="phone">Phone</th>
+              <th data-field="actions">Actions</th>
             </tr>
           </thead>
           {% for customer in customers %}
             <tr>
               <td>{{ customer['company'] }}</td>
               <td>{{ customer['email'] }}</td>
-              <!-- Add more fields to showcase on this page
-              Below is a method of adding the 'add an order' button which will route you to create_order in views.py
-              <td><a href="{{ url_for('create_order', value=customer['customer_id']) }}">Add an Order</a></td> -->
+              <td>{{ customer['fname'] }}</td>
+              <td>{{ customer['lname'] }}</td>
+              <td>{{ customer['phone'] }}</td>
+              <td>
+                <a href="/create_order/{{ customer['customer_id'] }}">Create Order</a>
+                |
+                <a href="/add_address/{{ customer['customer_id'] }}">Add Address</a>
+              </td>
             </tr>
           {% endfor %}
         </table>
       </div>
       <div class="section">
         <h3>Orders from Customers:</h3>
+        <table class="striped">
+        <thead>
+          <tr>
+            <th data-field="customer">Customer</th>
+            <th data-field="part">Part</th>
+            <th data-field="manufacturer">Manufacturer</th>
+          </tr>
+        </thead>
         <!-- Display all the current existing order information here -->
+        {% for order in orders %}
+          <tr>
+            <td>{{ order['company'] }}</td>
+            <td>{{ order['part_name'] }}</td>
+            <td>{{ order['manufacturer'] }}</td>
+          </tr>
+        {% endfor %}
+        </table>
       </div>
     </div>
   </div>

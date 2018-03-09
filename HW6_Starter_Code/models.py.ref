@@ -1,0 +1,19 @@
+import sqlite3 as sql
+
+def insert_customer(company,email):
+    # SQL statement to insert into Database
+    with sql.connect("database.db") as con:
+        cur = con.cursor()
+        cur.execute("INSERT INTO customers (company,email) VALUES (?,?)",(company,email))
+        con.commit()
+
+def retreive_customers():
+    # SQL Query Statement
+    with sql.connect("database.db") as con:
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        result = cur.execute("select * from customers").fetchall()
+        print (result)
+    return result
+
+#def
