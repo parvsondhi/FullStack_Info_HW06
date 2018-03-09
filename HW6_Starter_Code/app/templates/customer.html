@@ -17,12 +17,44 @@
         <p>
           Customer email:<br>
           {{ form.email(size=120) }}<br>
-          <!-- Additional form fields for the customer should go here -->
+        </p>
+            <!-- Additional form fields for the customer should go here DONE-->
+        <p>
+        Customer first name:<br>
+        {{ form.first_name(size=120) }}<br>
+        </p>
+        <p>    
+        Customer last name:<br>
+        {{ form.last_name(size=120) }}<br>
+        </p>
+        <p>
+        Customer phone:<br>
+        {{ form.phone(size=120) }}<br>
         </p>
       </div>
       <div class="divider"></div>
       <div class="section">
         <!-- Additional form fields for the Address should go here -->
+        <p>
+        Street Address:<br>
+        {{ Addform.street_address(size=120) }}<br>
+        </p>
+        <p>    
+        City:<br>
+        {{ Addform.city(size=120) }}<br>
+        </p>
+        <p>
+        State:<br>
+        {{ Addform.state(size=120) }}<br>
+        </p>
+        <p>
+        Country:<br>
+        {{ Addform.country(size=120) }}<br>
+        </p>
+        <p>
+        ZIP:<br>
+        {{ Addform.zip_code(size=120) }}<br>
+        </p>  
       </div>
       <p><input type="submit" value="Create Customer"></p>
     </form>
