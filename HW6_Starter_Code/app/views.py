@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request
 from app import app, models, db
-from .forms import CustomerForm, AddressForm
+from .forms import CustomerForm, AddressForm, OrderForm
 # Access the models file to use SQL functions
 from .models import *
 
@@ -12,7 +12,7 @@ def index():
 @app.route('/create_customer', methods=['GET', 'POST'])
 def create_customer():
     form = CustomerForm()
-    Addform = AddressForm()
+    addform = AddressForm()
     if form.validate_on_submit():
         # Get data from the form
         company = form.company.data
@@ -20,10 +20,16 @@ def create_customer():
         first_name = form.first_name.data
         last_name = form.last_name.data
         phone = form.phone.data
+        street_address = addform.street_address.data
+        city = addform.city.data
+        state = addform.state.data
+        country = addform.country.data
+        zip_code = addform.zip_code.data
         # Send data from form to Database
         insert_customer(company,email,first_name,last_name,phone)
+        insert_address(street_address,city,state,country,zip_code)
         return redirect('/customers')
-    return render_template('customer.html', form=form, Addform=Addform)
+    return render_template('customer.html', form=form, addform=addform)
 
 @app.route('/customers')
 def display_customer():
@@ -43,7 +49,7 @@ def create_order(value):
         # Send data from form to Database
         insert_order(name_of_part,manufacturer_of_part)
         return redirect('/customers')
-    return render_template('order.html', form=orderForm)
+    return render_template('order.html', form=form)
 
 @app.route('/orders')
 def display_order():

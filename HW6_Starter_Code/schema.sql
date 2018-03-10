@@ -6,7 +6,8 @@ drop table if exists `order`;
 drop table if exists tracker;
 drop table if exists address;
 
-create table customer (customer_id primary key, first_name, last_name, company, email, phone);
-create table address (id primary key, street_address, city, state, country, zip_code);
-create table `order` (order_id primary key, name_of_part, manufacturer_of_part);
-create table tracker (address_id, order_id, customer_id);
+create table customer (customer_id integer primary key, first_name text not null, last_name text not null, company text not null, email text not null, phone integer);
+create table address (address_id primary key, street_address text not null, city text not null, state text not null, country text not null, zip_code integer, customer_id, FOREIGN KEY(customer_id) REFERENCES customer(customer_id));
+create table `order` (order_id primary key, name_of_part text not null, manufacturer_of_part text not null);
+create table tracker (order_id, customer_id, FOREIGN KEY(order_id) REFERENCES `order`(order_id), FOREIGN KEY(customer_id) REFERENCES customer(customer_id));
+
